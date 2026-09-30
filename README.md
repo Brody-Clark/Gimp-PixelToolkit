@@ -1,62 +1,36 @@
 # GIMP PixelToolkit
 
-Collection of pixel art-focused plugins for GIMP Image Editing Software.
+Pixel-art utilities for GIMP 3, implemented with GIMP's bundled Python 3, PyGObject, GTK, and GEGL APIs.
 
-## Adding These Plugins to GIMP
+## Install
 
-1. Clone the repo
-    ```bash
-    git clone https://github.com/Brody-Clark/Gimp-PixelToolkit.git
-    ```
-2. Build the xBRZ wrapper shared libraries
-   1. Install [cmake](https://cmake.org/download/#latest) if you do not already have it.
-   2. build the shared library using cmake
-        ```bash
-        cd xbrz_wrapper
-        mkdir build
-        cd build
-        cmake ..
-        cmake --build .
-        ```
-    3. Locate and copy the built library files for your platform and build configuration into the `plugins/xbrz` directory
-        ```bash
-        # From within the `build` directory run:
-        mkdir -p ../../plugins/xbrz/    # Create an xbrz folder inside plugins/
-        find -type f \( -name "*.so" -o -name "*.dll" -o -name "*.dylib" \) -exec cp {} ../../plugins/xbrz/ \;  # Copy the library file from build to plugins/xbrz/
-        ```
-3. Locate your GIMP plug-in directory, this can be found within GIMP under `Edit > Preferences > Folders > Plug-ins`
-4. Copy all files and folders from this project's `plugins` directory to the GIMP `plug-ins` directory
-5. Restart GIMP
+1. In GIMP, locate the plug-in directory under `Edit > Preferences > Folders > Plug-ins`.
+2. Copy `plugins/pixel_toolkit_common.py` and the four plug-in folders from `plugins` into that directory. Keep each folder and its same-named Python script together; GIMP 3 expects each script name to match its containing plug-in folder.
+3. Restart GIMP. The commands appear under `Image > PixelToolkit`.
 
-## Included Plugins
+The xBRZ scaler also requires the native xBRZ shared library. Build it with CMake:
 
-### Sprite Sheet Exporter
+```powershell
+cmake -S xbrz_wrapper -B xbrz_wrapper/build
+cmake --build xbrz_wrapper/build --config Release
+```
 
-- Allows you to combine all working layers of an image into a packed sprite sheet and export it to a chosen folder. Original image and layers remain unchanged.
-- Located under `Image > PixelToolkit > Export As Sprite Sheet`
+Copy the generated `xbrz.dll`, `libxbrz.dylib`, or `libxbrz.so` into `plugins/xbrz_pixel_scaler/xbrz` before installing the scaler folder. The scaler reports a clear error when the library is absent; the other plug-ins do not depend on it.
 
-<img src="resources/Export_Before.png" alt="Export Demo" width="45%">
+## Plug-ins
 
-### Sprite Sheet Slicer
+### Export As Sprite Sheet
 
-- Simple sprite sheet utility designed to divide a packed tile sheet into individual layers.
-- Located under `Image > PixelToolkit > Slice Sprite Sheet`
+Packs each top-level image layer into its own cell in a square sprite sheet and saves the result as PNG or JPEG. Source layers and the source image are not modified.
 
-<img src="resources/Slice_Sprite_Sheet_UI.png" alt="Slicer UI" width="35%">
+### Slice Sprite Sheet
 
-<img src="resources/Slice_Sprite_Sheet_After.png" alt="Slicer Before" width="35%">
+Splits the selected layer into equal-sized tiles and displays a new image containing one layer per tile. Incomplete edges are skipped.
 
-### xBRZ Scaler
+### xBRZ Scale
 
-- Creates a non-destructive xBRZ-scaled image of active layer
-- Located under `Image > PixelToolkit > xBRZ Scale`
-
-<img src="resources/xBRZ_Scaler_Before.png" alt="xBRZ Before" width="25%">32x32
-  
-<img src="resources/xBRZ_Scaler_After.png" alt="xBRZ After" width="35%">128x128
+Scales the selected drawable by a factor from 2 to 6 and opens the result in a new image. Requires the native xBRZ library described above.
 
 ### Color Palette Swap
 
-- Opens a modal palette editor for the visible image composite, with up to 256 colors and a live preview.
-- Select a swatch to replace that color, then choose Create to add the recolored composite as a new layer.
-- Located under `Image > PixelToolkit > Color Palette Swap`
+Shows the visible image composite and its unique colors, up to 256 entries. Edit swatches to preview replacements. Create adds the recolored composite as a layer in RGB images; for grayscale or indexed images, it opens the RGB result as a new image.
