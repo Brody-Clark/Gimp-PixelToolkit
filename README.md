@@ -54,3 +54,9 @@ Collection of pixel art-focused plugins for GIMP Image Editing Software.
 <img src="resources/xBRZ_Scaler_Before.png" alt="xBRZ Before" width="25%">32x32
   
 <img src="resources/xBRZ_Scaler_After.png" alt="xBRZ After" width="35%">128x128
+
+### Color Palette Swap
+
+- Opens a modal palette editor for the visible image composite, with up to 256 colors and a live preview.
+- Select a swatch to replace that color, then choose Create to add the recolored composite as a new layer.
+- Located under `Image > PixelToolkit > Color Palette Swap`
