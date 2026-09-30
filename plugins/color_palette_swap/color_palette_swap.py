@@ -32,7 +32,7 @@ def build_palette(pixels):
     color_indices = {}
     pixel_indices = bytearray()
     for offset in range(0, len(pixels), 4):
-        color = tuple(pixels[offset:offset + 4])
+        color = tuple(pixels[offset:offset + 3])
         index = color_indices.get(color)
         if index is None:
             if len(palette) == MAX_PALETTE_COLORS:
