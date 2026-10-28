@@ -6,7 +6,6 @@ gi.require_version("Gegl", "0.4")
 gi.require_version("Gimp", "3.0")
 from gi.repository import Gegl, Gio, GLib, Gimp
 
-
 RGBA_FORMAT = "R'G'B'A u8"
 
 
@@ -21,8 +20,7 @@ def read_rgba(drawable, x=0, y=0, width=None, height=None):
         height = drawable.get_height()
     buffer = drawable.get_buffer()
     region = rectangle(x, y, width, height)
-    return bytes(buffer.get(region, 1.0, RGBA_FORMAT,
-                            Gegl.AbyssPolicy.NONE))
+    return bytes(buffer.get(region, 1.0, RGBA_FORMAT, Gegl.AbyssPolicy.NONE))
 
 
 def write_rgba(drawable, pixels, x=0, y=0, width=None, height=None):
@@ -41,8 +39,14 @@ def write_rgba(drawable, pixels, x=0, y=0, width=None, height=None):
 
 def new_rgba_layer(image, name, width, height, pixels):
     layer = Gimp.Layer.new(
-        image, name, width, height, Gimp.ImageType.RGBA_IMAGE,
-        100.0, Gimp.LayerMode.NORMAL)
+        image,
+        name,
+        width,
+        height,
+        Gimp.ImageType.RGBA_IMAGE,
+        100.0,
+        Gimp.LayerMode.NORMAL,
+    )
     image.insert_layer(layer, None, 0)
     write_rgba(layer, pixels, width=width, height=height)
     return layer
@@ -55,7 +59,8 @@ def show_image(image):
 
 def failure(procedure, message):
     return procedure.new_return_values(
-        Gimp.PDBStatusType.EXECUTION_ERROR, GLib.Error(str(message)))
+        Gimp.PDBStatusType.EXECUTION_ERROR, GLib.Error(str(message))
+    )
 
 
 def cancelled(procedure):
@@ -73,8 +78,7 @@ def export_image(image, file_path, export_format, drawable=None):
         raise RuntimeError("GIMP does not provide %s." % procedure_name)
 
     config = file_procedure.create_config()
-    available_properties = set(
-        prop.name for prop in config.list_properties())
+    available_properties = set(prop.name for prop in config.list_properties())
     if "run-mode" in available_properties:
         config.set_property("run-mode", Gimp.RunMode.NONINTERACTIVE)
     if "image" in available_properties:

@@ -60,15 +60,17 @@ def make_sprite_sheet(image):
                     continue
                 source_offset = (source_y * layer_width + source_x) * 4
                 target_offset = (target_y * sheet_width + target_x) * 4
-                sheet_pixels[target_offset:target_offset + 4] = \
-                    source[source_offset:source_offset + 4]
+                sheet_pixels[target_offset : target_offset + 4] = source[
+                    source_offset : source_offset + 4
+                ]
 
     return sheet_width, sheet_height, bytes(sheet_pixels)
 
 
 def choose_export_file():
     dialog = Gtk.FileChooserDialog(
-        title="Export Sprite Sheet", action=Gtk.FileChooserAction.SAVE)
+        title="Export Sprite Sheet", action=Gtk.FileChooserAction.SAVE
+    )
     dialog.add_button("Cancel", Gtk.ResponseType.CANCEL)
     dialog.add_button("Save", Gtk.ResponseType.ACCEPT)
     dialog.set_do_overwrite_confirmation(True)
@@ -109,10 +111,8 @@ def run(procedure, run_mode, image, drawables, config, data):
     temp_image = None
     try:
         width, height, pixels = make_sprite_sheet(image)
-        temp_image = Gimp.Image.new(
-            width, height, Gimp.ImageBaseType.RGB)
-        output_layer = new_rgba_layer(
-            temp_image, "Sprite Sheet", width, height, pixels)
+        temp_image = Gimp.Image.new(width, height, Gimp.ImageBaseType.RGB)
+        output_layer = new_rgba_layer(temp_image, "Sprite Sheet", width, height, pixels)
         export_image(temp_image, file_path, export_format, output_layer)
     except Exception as error:
         return failure(procedure, error)
@@ -130,14 +130,16 @@ class SpriteSheetExporter(Gimp.PlugIn):
         if name != PROCEDURE_NAME:
             return None
         procedure = Gimp.ImageProcedure.new(
-            self, name, Gimp.PDBProcType.PLUGIN, run, None)
+            self, name, Gimp.PDBProcType.PLUGIN, run, None
+        )
         procedure.set_menu_label("Export As Sprite Sheet")
         procedure.add_menu_path("<Image>/Image/PixelToolkit")
         procedure.set_attribution("Brody Clark", "Brody Clark", "2026")
         procedure.set_documentation(
             "Export As Sprite Sheet",
             "Pack each top-level image layer into a sprite-sheet cell.",
-            name)
+            name,
+        )
         return procedure
 
 
