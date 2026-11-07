@@ -65,7 +65,7 @@ def run(procedure, run_mode, image, drawables, config, data):
     tile_height = min(tile_height, source_height)
     if source_width % tile_width or source_height % tile_height:
         Gimp.message(
-            "Layer dimensions are not evenly divisible by the tile size; incomplete edges will be skipped."
+            "Layer dimensions are not evenly divisible by the tile size, incomplete edges will be skipped."
         )
 
     columns = source_width // tile_width
