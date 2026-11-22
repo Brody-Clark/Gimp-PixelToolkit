@@ -82,9 +82,10 @@ Located under `Image > PixelToolkit > Export As Sprite Sheet`.
 
 <table align="center">
   <tr>
-    <td align="center" width="50%"><img src="resources/gimp_plugin_export_demo.gif" alt="Export UI" width="50%" ></td>
+    <td align="center"><img src="resources/gimp_plugin_export_demo.gif" alt="Export UI" width="75%" ></td>
   </tr>
 </table>
+
 ### Slice Sprite Sheet
 
 Splits the selected layer into equal-sized tiles and displays a new image containing one layer per tile. Incomplete edges are skipped. 
@@ -92,7 +93,7 @@ Located under `Image > PixelToolkit > Slice Sprite Sheet`.
 
 <table align="center">
   <tr>
-    <td align="center" width="50%"><img src="resources/gimp_plugin_slice_demo.gif" alt="Slicer UI" width="50%" ></td>
+    <td align="center"><img src="resources/gimp_plugin_slice_demo.gif" alt="Slicer UI" width="75%" ></td>
   </tr>
 </table>
 
@@ -102,8 +103,8 @@ Scales the selected drawable by a factor from 2 to 6 and opens the result in a n
 
 <table align="center">
   <tr>
-    <td align="center" width="50%">
-      <img src="resources/gimp_plugin_xbrz_demo.gif" alt="xBRZ Demo" width="50%"><br>
+    <td align="center">
+      <img src="resources/gimp_plugin_xbrz_demo.gif" alt="xBRZ Demo" width="75%"><br>
     </td>
   </tr>
 </table>
@@ -114,8 +115,8 @@ Shows the visible image composite and its unique colors, up to 256 entries. Edit
 
 <table align="center">
   <tr>
-    <td align="center" width="50%">
-      <img src="resources/gimp_plugin_palette_swap_demo.gif" alt="Palette Swap Demo" width="50%"><br>
+    <td align="center">
+      <img src="resources/gimp_plugin_palette_swap_demo.gif" alt="Palette Swap Demo" width="75%"><br>
     </td>
   </tr>
 </table>
