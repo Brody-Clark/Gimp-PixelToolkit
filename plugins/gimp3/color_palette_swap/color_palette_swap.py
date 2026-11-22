@@ -25,15 +25,6 @@ from pixel_toolkit_common import (
     succeeded,
 )
 
-
-# if os.environ.get("GIMP_PLUGIN_DEBUG") == "1":
-#     import debugpy
-
-#     debugpy.listen(("127.0.0.1", 5678))
-
-#     if os.environ.get("GIMP_PLUGIN_DEBUG_WAIT") == "1":
-#         debugpy.wait_for_client()
-
 PROCEDURE_NAME = "pixel-toolkit-color-palette-swap"
 MAX_PALETTE_COLORS = 256
 
