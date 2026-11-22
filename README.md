@@ -2,7 +2,7 @@
 
 Pixel-art utilities for GIMP 2 and GIMP 3. The implementations are kept separate because GIMP 2 uses the legacy `gimpfu` API while GIMP 3 uses Python 3, PyGObject, GTK, and GEGL APIs.
 
-## Choose the implementation for your GIMP version
+## Choose your GIMP version
 
 - `plugins/gimp2/` contains the legacy GIMP 2 plug-ins.
 - `plugins/gimp3/` contains the current GIMP 3 plug-ins.
@@ -78,18 +78,47 @@ GIMP 2 support is maintained as a legacy implementation. It is not the same code
 ### Export As Sprite Sheet
 
 Packs each top-level image layer into its own cell in a square sprite sheet and saves the result as PNG or JPEG. Source layers and the source image are not modified.
+Located under `Image > PixelToolkit > Export As Sprite Sheet`.
 
+<table align="center">
+  <tr>
+    <td align="center" width="50%"><img src="resources/gimp_plugin_export_demo.gif" alt="Export UI" width="50%" ></td>
+  </tr>
+</table>
 ### Slice Sprite Sheet
 
-Splits the selected layer into equal-sized tiles and displays a new image containing one layer per tile. Incomplete edges are skipped.
+Splits the selected layer into equal-sized tiles and displays a new image containing one layer per tile. Incomplete edges are skipped. 
+Located under `Image > PixelToolkit > Slice Sprite Sheet`.
+
+<table align="center">
+  <tr>
+    <td align="center" width="50%"><img src="resources/gimp_plugin_slice_demo.gif" alt="Slicer UI" width="50%" ></td>
+  </tr>
+</table>
 
 ### xBRZ Scale
 
-Scales the selected drawable by a factor from 2 to 6 and opens the result in a new image. Requires the native xBRZ library described above.
+Scales the selected drawable by a factor from 2 to 6 and opens the result in a new image. Requires the native xBRZ library described above. Creates a non-destructive xBRZ-scaled image of active layer. Located under `Image > PixelToolkit > xBRZ Scale`.
+
+<table align="center">
+  <tr>
+    <td align="center" width="50%">
+      <img src="resources/gimp_plugin_xbrz_demo.gif" alt="xBRZ Demo" width="50%"><br>
+    </td>
+  </tr>
+</table>
 
 ### Color Palette Swap
 
-Shows the visible image composite and its unique colors, up to 256 entries. Edit swatches to preview replacements. Create adds the recolored composite as a layer in RGB images. For grayscale or indexed images, it opens the RGB result as a new image.
+Shows the visible image composite and its unique colors, up to 256 entries. Edit swatches to preview replacements. Create adds the recolored composite as a layer in RGB images. For grayscale or indexed images, it opens the RGB result as a new image. Located under `Image > PixelToolkit > Color Palette Swap`.
+
+<table align="center">
+  <tr>
+    <td align="center" width="50%">
+      <img src="resources/gimp_plugin_palette_swap_demo.gif" alt="Palette Swap Demo" width="50%"><br>
+    </td>
+  </tr>
+</table>
 
 ## Legacy GIMP 2 plug-ins
 
