@@ -1,56 +1,132 @@
 # GIMP PixelToolkit
 
-Collection of pixel art-focused plugins for GIMP Image Editing Software.
+Pixel-art utilities for GIMP 2 and GIMP 3. The implementations are kept separate because GIMP 2 uses the legacy `gimpfu` API while GIMP 3 uses Python 3, PyGObject, GTK, and GEGL APIs.
 
-## Adding These Plugins to GIMP
+## Choose your GIMP version
 
-1. Clone the repo
-    ```bash
-    git clone https://github.com/Brody-Clark/Gimp-PixelToolkit.git
-    ```
-2. Build the xBRZ wrapper shared libraries
-   1. Install [cmake](https://cmake.org/download/#latest) if you do not already have it.
-   2. build the shared library using cmake
-        ```bash
-        cd xbrz_wrapper
-        mkdir build
-        cd build
-        cmake ..
-        cmake --build .
-        ```
-    3. Locate and copy the built library files for your platform and build configuration into the `plugins/xbrz` directory
-        ```bash
-        # From within the `build` directory run:
-        mkdir -p ../../plugins/xbrz/    # Create an xbrz folder inside plugins/
-        find -type f \( -name "*.so" -o -name "*.dll" -o -name "*.dylib" \) -exec cp {} ../../plugins/xbrz/ \;  # Copy the library file from build to plugins/xbrz/
-        ```
-3. Locate your GIMP plug-in directory, this can be found within GIMP under `Edit > Preferences > Folders > Plug-ins`
-4. Copy all files and folders from this project's `plugins` directory to the GIMP `plug-ins` directory
-5. Restart GIMP
+- `plugins/gimp2/` contains the legacy GIMP 2 plug-ins.
+- `plugins/gimp3/` contains the current GIMP 3 plug-ins.
+- GIMP 2 and GIMP 3 plug-ins must not be installed together in the same plug-in directory.
 
-## Included Plugins
+Do not copy the entire `plugins/` directory directly into GIMP. Copy only the contents for your GIMP version.
 
-### Sprite Sheet Exporter
+## GIMP 3 install
 
-- Allows you to combine all working layers of an image into a packed sprite sheet and export it to a chosen folder. Original image and layers remain unchanged.
-- Located under `Image > PixelToolkit > Export As Sprite Sheet`
+1. Clone the repository:
 
-<img src="resources/Export_Before.png" alt="Export Demo" width="45%">
+   ```bash
+   git clone https://github.com/Brody-Clark/Gimp-PixelToolkit.git
+   cd Gimp-PixelToolkit
+   ```
 
-### Sprite Sheet Slicer
+2. Locate the GIMP 3 plug-in directory under `Edit > Preferences > Folders > Plug-ins`.
 
-- Simple sprite sheet utility designed to divide a packed tile sheet into individual layers.
-- Located under `Image > PixelToolkit > Slice Sprite Sheet`
+3. Copy the contents of `plugins/gimp3/` into that directory:
 
-<img src="resources/Slice_Sprite_Sheet_UI.png" alt="Slicer UI" width="35%">
+   ```text
+   plugins/gimp3/
+   ├── pixel_toolkit_common.py
+   ├── color_palette_swap/
+   │   └── color_palette_swap.py
+   ├── sprite_sheet_layer_exporter/
+   │   └── sprite_sheet_layer_exporter.py
+   ├── sprite_sheet_slicer/
+   │   └── sprite_sheet_slicer.py
+   └── xbrz_pixel_scaler/
+       └── xbrz_pixel_scaler.py
+   ```
 
-<img src="resources/Slice_Sprite_Sheet_After.png" alt="Slicer Before" width="35%">
+4. Keep each GIMP 3 folder and same-named Python script together. GIMP 3 expects the plug-in directory layout to match the script basename.
 
-### xBRZ Scaler
+5. Copy the GIMP 3 plug-in files, restart GIMP, and look under `Image > PixelToolkit`.
 
-- Creates a non-destructive xBRZ-scaled image of active layer
-- Located under `Image > PixelToolkit > xBRZ Scale`
+Example installation for the current Linux user configuration:
 
-<img src="resources/xBRZ_Scaler_Before.png" alt="xBRZ Before" width="25%">32x32
-  
-<img src="resources/xBRZ_Scaler_After.png" alt="xBRZ After" width="35%">128x128
+```bash
+cp -r plugins/gimp3/* ~/.config/GIMP/3.2/plug-ins/
+chmod 755 ~/.config/GIMP/3.2/plug-ins/*/*.py
+chmod 644 ~/.config/GIMP/3.2/plug-ins/pixel_toolkit_common.py
+rm -f ~/.config/GIMP/3.2/pluginrc
+```
+
+The xBRZ GIMP 3 plug-in requires a native library. Build it with CMake:
+
+```bash
+cmake -S xbrz_wrapper -B xbrz_wrapper/build
+cmake --build xbrz_wrapper/build --config Release
+```
+
+Copy the generated `xbrz.dll`, `libxbrz.dylib`, or `libxbrz.so` into `plugins/gimp3/xbrz_pixel_scaler/xbrz/` before copying the GIMP 3 plug-ins. The plug-in reports a clear error when the library is absent. The other GIMP 3 plug-ins do not depend on it.
+
+## GIMP 2 legacy install
+
+`plugins/gimp2/` contains the legacy GIMP 2 implementation and uses `gimpfu`:
+
+```text
+plugins/gimp2/
+├── sprite_sheet_layer_exporter.py
+├── sprite_sheet_slicer.py
+└── xbrz_pixel_scaler.py
+```
+
+Copy these legacy scripts into the GIMP 2 plug-in directory reported under `Edit > Preferences > Folders > Plug-ins`. Make each script executable and restart GIMP 2.
+
+GIMP 2 support is maintained as a legacy implementation. It is not the same codebase as the GIMP 3 plug-ins and does not include the GIMP 3 Color Palette Swap plug-in.
+
+## Included GIMP 3 plug-ins
+
+### Export As Sprite Sheet
+
+Packs each top-level image layer into its own cell in a square sprite sheet and saves the result as PNG or JPEG. Source layers and the source image are not modified.
+Located under `Image > PixelToolkit > Export As Sprite Sheet`.
+
+<table align="center">
+  <tr>
+    <td align="center"><img src="resources/gimp_plugin_export_demo.gif" alt="Export UI" width="75%" ></td>
+  </tr>
+</table>
+
+### Slice Sprite Sheet
+
+Splits the selected layer into equal-sized tiles and displays a new image containing one layer per tile. Incomplete edges are skipped. 
+Located under `Image > PixelToolkit > Slice Sprite Sheet`.
+
+<table align="center">
+  <tr>
+    <td align="center"><img src="resources/gimp_plugin_slice_demo.gif" alt="Slicer UI" width="75%" ></td>
+  </tr>
+</table>
+
+### xBRZ Scale
+
+Scales the selected drawable by a factor from 2 to 6 and opens the result in a new image. Requires the native xBRZ library described above. Creates a non-destructive xBRZ-scaled image of active layer. Located under `Image > PixelToolkit > xBRZ Scale`.
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="resources/gimp_plugin_xbrz_demo.gif" alt="xBRZ Demo" width="75%"><br>
+    </td>
+  </tr>
+</table>
+
+### Color Palette Swap
+
+Shows the visible image composite and its unique colors, up to 256 entries. Edit swatches to preview replacements. Create adds the recolored composite as a layer in RGB images. For grayscale or indexed images, it opens the RGB result as a new image. Located under `Image > PixelToolkit > Color Palette Swap`.
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="resources/gimp_plugin_palette_swap_demo.gif" alt="Palette Swap Demo" width="75%"><br>
+    </td>
+  </tr>
+</table>
+
+## Legacy GIMP 2 plug-ins
+
+The GIMP 2 scripts provide:
+
+- Export Sprite Sheet
+- Slice Sprite Sheet
+- xBRZ Pixel Scaling
+
+GIMP 2 support is no longer the primary development target, but fixes that improve the legacy scripts can still be accepted without changing the GIMP 3 implementation.
