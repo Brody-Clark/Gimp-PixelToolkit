@@ -13,18 +13,23 @@ Verify that the expected plug-in structure is preserved when you install or copy
 
 ```text
 plugins/
-├── pixel_toolkit_common.py
-├── color_palette_swap/
-│   └── color_palette_swap.py
-├── sprite_sheet_layer_exporter/
-│   └── sprite_sheet_layer_exporter.py
-├── sprite_sheet_slicer/
-│   └── sprite_sheet_slicer.py
-└── xbrz_pixel_scaler/
-    └── xbrz_pixel_scaler.py
+├── gimp2/
+│   ├── sprite_sheet_layer_exporter.py
+│   ├── sprite_sheet_slicer.py
+│   └── xbrz_pixel_scaler.py
+└── gimp3/
+    ├── pixel_toolkit_common.py
+    ├── color_palette_swap/
+    │   └── color_palette_swap.py
+    ├── sprite_sheet_layer_exporter/
+    │   └── sprite_sheet_layer_exporter.py
+    ├── sprite_sheet_slicer/
+    │   └── sprite_sheet_slicer.py
+    └── xbrz_pixel_scaler/
+        └── xbrz_pixel_scaler.py
 ```
 
-GIMP 3 expects the executable Python file to be in a subdirectory, and this project also requires the script basename to match its containing folder. Keep the checked-in layout and copy the complete plug-in folder rather than only the `.py` file.
+GIMP 3 expects the executable Python file to be in a subdirectory, and this project requires the script basename to match its containing folder. GIMP 2 plug-ins remain flat legacy scripts and use `gimpfu`. Never mix or copy GIMP 2 plug-ins into a GIMP 3 plug-in directory.
 
 ## Installing a development copy
 
@@ -38,13 +43,15 @@ On Linux, the common user plug-in directory is:
 ~/.config/GIMP/3.2/plug-ins/
 ```
 
-Copy the source files into that directory. For example:
+Copy the GIMP 3 development files into that directory. For example:
 
 ```bash
-cp -r plugins/* ~/.config/GIMP/3.2/plug-ins/
+cp -r plugins/gimp3/* ~/.config/GIMP/3.2/plug-ins/
 chmod 755 ~/.config/GIMP/3.2/plug-ins/*/*.py
 chmod 644 ~/.config/GIMP/3.2/plug-ins/pixel_toolkit_common.py
 ```
+
+For GIMP 2 development, copy the flat scripts from `plugins/gimp2/` into the GIMP 2 plug-in directory instead. Do not copy `plugins/gimp3/` or the GIMP 3 shared module into GIMP 2.
 
 Only the plug-in entry scripts need to be executable. Shared modules such as `pixel_toolkit_common.py` should not be executable.
 
@@ -118,10 +125,10 @@ Compile the Python source before copying it:
 python3 -m compileall -q plugins
 ```
 
-To validate only the changed plug-in:
+To validate only the changed GIMP 3 plug-in:
 
 ```bash
-python3 -m compileall -q plugins/color_palette_swap/color_palette_swap.py
+python3 -m compileall -q plugins/gimp3/color_palette_swap/color_palette_swap.py
 ```
 
 Do not expect direct execution from a normal host terminal to prove that a GIMP plug-in works. GIMP 3's `Gimp`, `GimpUi`, and GTK introspection namespaces are provided by GIMP's runtime environment and may not be available to the system Python.
