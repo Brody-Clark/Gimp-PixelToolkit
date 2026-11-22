@@ -144,3 +144,4 @@ class SpriteSheetExporter(Gimp.PlugIn):
 
 
 Gimp.main(SpriteSheetExporter.__gtype__, sys.argv)
+gimp --verbose --console-messages --no-splash

@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Launch GIMP for debugging",
+      "type": "shell",
+      "command": "gimp --new-instance --verbose --console-messages --no-splash",
+      "options": {
+        "env": {
+          "GIMP_PLUGIN_DEBUG": "1",
+          "GIMP_PLUGIN_DEBUG_WAIT": "1"
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [
+          {
+            "regexp": "^(.*)$",
+            "file": 1,
+            "location": 2,
+            "message": 3
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": ".*"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }
+  ]
+}

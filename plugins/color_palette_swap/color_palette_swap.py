@@ -10,6 +10,8 @@ import gi
 gi.require_version("Gimp", "3.0")
 gi.require_version("GimpUi", "3.0")
 gi.require_version("Gtk", "3.0")
+gi.require_version("Gdk", "3.0")
+gi.require_version("GdkPixbuf", "2.0")
 from gi.repository import Gdk, GdkPixbuf, GLib, Gimp, GimpUi, Gtk
 
 PLUGIN_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,6 +24,15 @@ from pixel_toolkit_common import (
     show_image,
     succeeded,
 )
+
+
+# if os.environ.get("GIMP_PLUGIN_DEBUG") == "1":
+#     import debugpy
+
+#     debugpy.listen(("127.0.0.1", 5678))
+
+#     if os.environ.get("GIMP_PLUGIN_DEBUG_WAIT") == "1":
+#         debugpy.wait_for_client()
 
 PROCEDURE_NAME = "pixel-toolkit-color-palette-swap"
 MAX_PALETTE_COLORS = 256
@@ -133,7 +144,6 @@ class PaletteSwapDialog(object):
             int(color.red * 255 + 0.5),
             int(color.green * 255 + 0.5),
             int(color.blue * 255 + 0.5),
-            self.palette[index][3],
         )
         button.set_tooltip_text(
             "Color %d: %s" % (index + 1, color_hex(self.palette[index]))
